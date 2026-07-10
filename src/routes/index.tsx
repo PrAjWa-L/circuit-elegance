@@ -185,14 +185,14 @@ function Home() {
                 Have a project that can't afford downtime?
               </h2>
               <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-                Our field engineers help you spec, source, and stage components for
-                the most demanding industrial deployments.
+                Browse our catalog of industrial-grade components ready to ship
+                from our distribution centre.
               </p>
               <Link
-                to="/contact"
+                to="/products"
                 className="mt-10 inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
               >
-                Talk to an engineer <Zap className="w-4 h-4" />
+                Browse Catalog <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

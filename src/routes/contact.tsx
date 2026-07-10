@@ -2,15 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Layout } from "@/components/site/Layout";
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, Send, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact VOLTCORE — Talk to an Engineer" },
-      { name: "description", content: "Reach our field-engineering team for quotes, specifications, and project support. Response within 4 business hours." },
+      { title: "Contact VOLTCORE — Request a Quote" },
+      { name: "description", content: "Reach our distribution centre for quotes and orders. Response within 4 business hours." },
       { property: "og:title", content: "Contact VOLTCORE" },
-      { property: "og:description", content: "Talk directly to a licensed electrical engineer." },
+      { property: "og:description", content: "Get in touch with our distribution team." },
     ],
   }),
   component: Contact,
@@ -32,13 +32,13 @@ function Contact() {
           >
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-4">/ Contact</div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95]">
-              Talk to an
+              Get in
               <br />
-              <span className="text-gradient-voltage">engineer.</span>
+              <span className="text-gradient-voltage">touch.</span>
             </h1>
             <p className="mt-8 text-lg text-muted-foreground max-w-2xl">
-              Every quote goes through a licensed electrical engineer. Expect a
-              response within four business hours.
+              Send us your requirements and our distribution team will respond
+              within four business hours.
             </p>
           </motion.div>
         </div>
@@ -49,8 +49,7 @@ function Contact() {
           <div className="lg:col-span-2 space-y-6">
             {[
               { icon: Phone, label: "Phone", value: "+1 (713) 555-0142", meta: "Mon–Fri · 6am–8pm CT" },
-              { icon: Mail, label: "Email", value: "engineering@voltcore.io", meta: "24-hour response SLA" },
-              { icon: MapPin, label: "HQ", value: "1200 Industrial Ave, Houston TX 77002", meta: "Warehouses: Rotterdam · Singapore · Dubai" },
+              { icon: Mail, label: "Email", value: "orders@voltcore.io", meta: "24-hour response SLA" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}

@@ -34,9 +34,8 @@ export function Footer() {
             Contact
           </h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>1200 Industrial Ave</li>
-            <li>Houston, TX 77002</li>
             <li className="text-primary font-mono">+1 (713) 555-0142</li>
+            <li>orders@voltcore.io</li>
           </ul>
         </div>
       </div>

@@ -57,7 +57,7 @@ function Home() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-xs font-mono uppercase tracking-widest text-primary">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Est. 1987 · Houston, Texas
+              Est. 1987 · Distribution Centre
             </div>
             <h1 className="mt-6 text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95]">
               Power the{" "}
@@ -81,24 +81,9 @@ function Home() {
                 to="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-md border border-border hover:border-primary/50 hover:bg-surface transition-colors font-semibold"
               >
-                Request Engineering Support
+                Request a Quote
               </Link>
             </div>
-          </motion.div>
-
-          {/* Stats bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden border border-border"
-          >
-            {stats.map((s) => (
-              <div key={s.label} className="bg-background p-6">
-                <div className="text-3xl md:text-4xl font-display font-bold text-primary">{s.value}</div>
-                <div className="mt-1 text-xs font-mono uppercase tracking-widest text-muted-foreground">{s.label}</div>
-              </div>
-            ))}
           </motion.div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowRight, ShieldCheck, Zap, Activity, Cpu, Factory, Award } from "lucide-react";
+import { ArrowRight, ShieldCheck, Activity, Cpu, Factory, Award } from "lucide-react";
 import { Layout } from "@/components/site/Layout";
 import { products } from "@/lib/products";
 import hero from "@/assets/hero.jpg";
@@ -17,12 +17,8 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const stats = [
-  { value: "37+", label: "Years in Operation" },
-  { value: "42K", label: "SKUs in Stock" },
-  { value: "98.4%", label: "On-time Delivery" },
-  { value: "62", label: "Countries Served" },
-];
+
+
 
 const capabilities = [
   { icon: ShieldCheck, title: "Circuit Protection", desc: "MCCBs, ACBs, and RCDs rated up to 6300A with type-tested arc-flash containment." },

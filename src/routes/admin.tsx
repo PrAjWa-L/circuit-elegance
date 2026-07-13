@@ -205,7 +205,7 @@ function Admin() {
               </div>
               <button className="text-xs font-semibold text-primary hover:underline">View all →</button>
             </div>
-            <div className="overflow-x-auto -mx-6 px-6">
+            <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-xs font-mono uppercase tracking-widest text-muted-foreground border-b border-border">

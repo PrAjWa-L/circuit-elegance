@@ -82,7 +82,7 @@ function Contact() {
               e.preventDefault();
               setSent(true);
             }}
-            className="lg:col-span-3 p-8 md:p-10 rounded-lg border border-border bg-surface"
+            className="lg:col-span-3 p-6 sm:p-8 md:p-10 rounded-lg border border-border bg-surface"
           >
             {sent ? (
               <div className="text-center py-16">

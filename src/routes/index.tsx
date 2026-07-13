@@ -126,18 +126,18 @@ function Home() {
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-16">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mb-10 md:mb-16">
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">
               / 02 · Featured Inventory
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">
               In-stock. Type-tested. Shipped in 48 hours.
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.slice(0, 3).map((p, i) => (
               <motion.div
                 key={p.id}

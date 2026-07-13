@@ -40,7 +40,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-6 py-6 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-muted-foreground">
           <span>© 2026 VOLTCORE INDUSTRIAL SUPPLY</span>
           <span>ISO 9001:2015 · UL LISTED · CE CERTIFIED</span>
         </div>

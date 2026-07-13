@@ -21,7 +21,7 @@ export function Nav() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="fixed top-0 inset-x-0 z-50 glass-panel"
     >
-      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
           <div className="relative w-8 h-8 flex items-center justify-center rounded-md bg-primary/10 border border-primary/30">
             <Zap className="w-4 h-4 text-primary" strokeWidth={2.5} />

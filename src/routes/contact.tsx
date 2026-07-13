@@ -21,9 +21,9 @@ function Contact() {
 
   return (
     <Layout>
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 grid-lines opacity-30 [mask-image:radial-gradient(ellipse_at_top,black_10%,transparent_60%)]" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -31,12 +31,12 @@ function Contact() {
             className="max-w-3xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-4">/ Contact</div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95]">
               Get in
               <br />
               <span className="text-gradient-voltage">touch.</span>
             </h1>
-            <p className="mt-8 text-lg text-muted-foreground max-w-2xl">
+            <p className="mt-6 sm:mt-8 text-base sm:text-lg text-muted-foreground max-w-2xl">
               Send us your requirements and our distribution team will respond
               within four business hours.
             </p>
@@ -44,8 +44,8 @@ function Contact() {
         </div>
       </section>
 
-      <section className="pb-32">
-        <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-5 gap-12">
+      <section className="pb-20 md:pb-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-5 gap-8 md:gap-12">
           <div className="lg:col-span-2 space-y-6">
             {[
               { icon: Phone, label: "Phone", value: "+1 (713) 555-0142", meta: "Mon–Fri · 6am–8pm CT" },

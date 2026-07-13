@@ -85,14 +85,14 @@ function Home() {
       </section>
 
       {/* CAPABILITIES */}
-      <section className="relative py-32">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6 mb-16">
+      <section className="relative py-20 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-10 md:mb-16">
             <div>
               <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">
                 / 01 · Capabilities
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
                 Four pillars of industrial power distribution.
               </h2>
             </div>
@@ -101,7 +101,7 @@ function Home() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {capabilities.map((c, i) => (
               <motion.div
                 key={c.title}

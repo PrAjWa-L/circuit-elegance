@@ -22,9 +22,9 @@ function Products() {
 
   return (
     <Layout>
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-16 overflow-hidden">
         <div className="absolute inset-0 grid-lines opacity-30 [mask-image:radial-gradient(ellipse_at_top,black_10%,transparent_60%)]" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -33,12 +33,12 @@ function Products() {
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-4">
               / Catalog · 42,000+ SKUs
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95] max-w-3xl">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95] max-w-3xl">
               Every component,
               <br />
               <span className="text-gradient-voltage">type-tested.</span>
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl">
               A selection of our most-requested industrial electrical components.
               Contact us for the full 42,000-SKU catalog.
             </p>
@@ -46,14 +46,14 @@ function Products() {
         </div>
       </section>
 
-      <section className="pb-32">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap gap-2 mb-10 pb-6 border-b border-border">
+      <section className="pb-20 md:pb-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex flex-wrap gap-2 mb-8 md:mb-10 pb-6 border-b border-border">
             {categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setCat(c)}
-                className={`px-4 py-2 rounded-md text-sm font-mono uppercase tracking-widest transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-mono uppercase tracking-widest transition-colors ${
                   cat === c
                     ? "bg-primary text-primary-foreground"
                     : "border border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
@@ -64,7 +64,7 @@ function Products() {
             ))}
           </div>
 
-          <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
               {filtered.map((p) => (
                 <motion.div

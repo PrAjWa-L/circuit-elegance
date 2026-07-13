@@ -86,7 +86,7 @@ export function Nav() {
           exit={{ height: 0, opacity: 0 }}
           className="md:hidden border-t border-border overflow-hidden"
         >
-          <div className="px-6 py-4 flex flex-col gap-1">
+          <div className="px-4 sm:px-6 py-4 flex flex-col gap-1">
             {links.map((l) => (
               <Link
                 key={l.to}

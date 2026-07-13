@@ -34,9 +34,9 @@ const values = [
 function About() {
   return (
     <Layout>
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 grid-lines opacity-30 [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_60%)]" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,12 +46,12 @@ function About() {
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-4">
               / About
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95]">
               Built for the plants that
               <br />
               <span className="text-gradient-voltage">never stop running.</span>
             </h1>
-            <p className="mt-8 text-lg md:text-xl text-muted-foreground leading-relaxed">
+            <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
               VOLTCORE is a family-owned industrial electrical distributor. For nearly
               four decades we've supplied the switchgear, drives, and controls that keep
               refineries, data centers, mines, and utilities on-line.
@@ -60,8 +60,8 @@ function About() {
         </div>
       </section>
 
-      <section className="pb-32">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="pb-20 md:pb-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -74,15 +74,15 @@ function About() {
         </div>
       </section>
 
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-16">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10 md:gap-16">
           <div>
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">/ Principles</div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               How we operate.
             </h2>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             {values.map((v, i) => (
               <motion.div
                 key={i}
@@ -93,17 +93,17 @@ function About() {
                 className="flex gap-4 items-start"
               >
                 <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                <p className="text-lg leading-relaxed">{v}</p>
+                <p className="text-base sm:text-lg leading-relaxed">{v}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">/ Timeline</div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16">
             Nearly four decades of infrastructure.
           </h2>
 

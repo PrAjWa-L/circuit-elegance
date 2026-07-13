@@ -44,38 +44,38 @@ function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-40">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-24 sm:pt-32 pb-24 sm:pb-40">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-xs font-mono uppercase tracking-widest text-primary">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-[10px] sm:text-xs font-mono uppercase tracking-widest text-primary">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Est. 1987 · Distribution Centre
             </div>
-            <h1 className="mt-6 text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95]">
+            <h1 className="mt-6 text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95]">
               Power the{" "}
               <span className="text-gradient-voltage">critical</span>
               <br />
               infrastructure.
             </h1>
-            <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+            <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
               Industrial-grade circuit protection, motor control, and automation
               components. Engineered for uptime. Certified for scale.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
               <Link
                 to="/products"
-                className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-[0_0_40px_-8px_var(--color-primary)] hover:shadow-[0_0_60px_-4px_var(--color-primary)] transition-all"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-[0_0_40px_-8px_var(--color-primary)] hover:shadow-[0_0_60px_-4px_var(--color-primary)] transition-all"
               >
                 Browse Catalog
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-md border border-border hover:border-primary/50 hover:bg-surface transition-colors font-semibold"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md border border-border hover:border-primary/50 hover:bg-surface transition-colors font-semibold"
               >
                 Request a Quote
               </Link>
@@ -85,14 +85,14 @@ function Home() {
       </section>
 
       {/* CAPABILITIES */}
-      <section className="relative py-32">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6 mb-16">
+      <section className="relative py-20 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-10 md:mb-16">
             <div>
               <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">
                 / 01 · Capabilities
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
                 Four pillars of industrial power distribution.
               </h2>
             </div>
@@ -101,7 +101,7 @@ function Home() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {capabilities.map((c, i) => (
               <motion.div
                 key={c.title}
@@ -126,18 +126,18 @@ function Home() {
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-16">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mb-10 md:mb-16">
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">
               / 02 · Featured Inventory
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">
               In-stock. Type-tested. Shipped in 48 hours.
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.slice(0, 3).map((p, i) => (
               <motion.div
                 key={p.id}
@@ -173,24 +173,24 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-32">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-12 md:p-16">
+      <section className="py-20 md:py-32">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-8 sm:p-12 md:p-16">
             <div className="absolute inset-0 grid-lines opacity-30" />
             <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
             <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-copper/20 blur-3xl" />
             <div className="relative">
               <Award className="w-10 h-10 text-copper mb-6" />
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight max-w-2xl">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight max-w-2xl">
                 Have a project that can't afford downtime?
               </h2>
-              <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+              <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl">
                 Browse our catalog of industrial-grade components ready to ship
                 from our distribution centre.
               </p>
               <Link
                 to="/products"
-                className="mt-10 inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+                className="mt-8 md:mt-10 inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
               >
                 Browse Catalog <ArrowRight className="w-4 h-4" />
               </Link>

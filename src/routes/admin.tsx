@@ -196,7 +196,7 @@ function Admin() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.4 }}
-            className="mt-6 p-6 rounded-lg border border-border bg-surface"
+            className="mt-6 p-4 sm:p-6 rounded-lg border border-border bg-surface"
           >
             <div className="flex items-center justify-between mb-6">
               <div>

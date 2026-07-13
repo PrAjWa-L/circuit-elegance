@@ -173,24 +173,24 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-32">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-12 md:p-16">
+      <section className="py-20 md:py-32">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-8 sm:p-12 md:p-16">
             <div className="absolute inset-0 grid-lines opacity-30" />
             <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
             <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-copper/20 blur-3xl" />
             <div className="relative">
               <Award className="w-10 h-10 text-copper mb-6" />
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight max-w-2xl">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight max-w-2xl">
                 Have a project that can't afford downtime?
               </h2>
-              <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+              <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl">
                 Browse our catalog of industrial-grade components ready to ship
                 from our distribution centre.
               </p>
               <Link
                 to="/products"
-                className="mt-10 inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+                className="mt-8 md:mt-10 inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
               >
                 Browse Catalog <ArrowRight className="w-4 h-4" />
               </Link>

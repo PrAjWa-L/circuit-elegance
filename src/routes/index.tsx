@@ -44,38 +44,38 @@ function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-40">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-24 sm:pt-32 pb-24 sm:pb-40">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-xs font-mono uppercase tracking-widest text-primary">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-[10px] sm:text-xs font-mono uppercase tracking-widest text-primary">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Est. 1987 · Distribution Centre
             </div>
-            <h1 className="mt-6 text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95]">
+            <h1 className="mt-6 text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95]">
               Power the{" "}
               <span className="text-gradient-voltage">critical</span>
               <br />
               infrastructure.
             </h1>
-            <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+            <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
               Industrial-grade circuit protection, motor control, and automation
               components. Engineered for uptime. Certified for scale.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
               <Link
                 to="/products"
-                className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-[0_0_40px_-8px_var(--color-primary)] hover:shadow-[0_0_60px_-4px_var(--color-primary)] transition-all"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-[0_0_40px_-8px_var(--color-primary)] hover:shadow-[0_0_60px_-4px_var(--color-primary)] transition-all"
               >
                 Browse Catalog
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-md border border-border hover:border-primary/50 hover:bg-surface transition-colors font-semibold"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md border border-border hover:border-primary/50 hover:bg-surface transition-colors font-semibold"
               >
                 Request a Quote
               </Link>

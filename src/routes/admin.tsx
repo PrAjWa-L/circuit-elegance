@@ -81,34 +81,34 @@ function Admin() {
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-16 border-b border-border flex items-center justify-between px-6 gap-4">
-          <div className="flex items-center gap-3 flex-1 max-w-md">
-            <div className="relative flex-1">
+        <header className="h-16 border-b border-border flex items-center justify-between px-4 sm:px-6 gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 flex-1 max-w-md min-w-0">
+            <div className="relative flex-1 min-w-0">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
-                placeholder="Search orders, SKUs, customers…"
-                className="w-full pl-10 pr-4 py-2 rounded-md bg-surface border border-border text-sm focus:border-primary/40 focus:outline-none"
+                placeholder="Search…"
+                className="w-full pl-10 pr-3 py-2 rounded-md bg-surface border border-border text-sm focus:border-primary/40 focus:outline-none"
               />
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button className="relative p-2 rounded-md hover:bg-surface">
               <Bell className="w-4 h-4" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-copper" />
             </button>
-            <div className="flex items-center gap-3 pl-3 border-l border-border">
+            <div className="flex items-center gap-3 pl-2 sm:pl-3 border-l border-border">
               <div className="hidden sm:block text-right">
                 <div className="text-sm font-medium">Alex Reyes</div>
                 <div className="text-xs text-muted-foreground">Ops Manager</div>
               </div>
-              <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center font-semibold text-sm">
+              <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center font-semibold text-sm shrink-0">
                 AR
               </div>
             </div>
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 overflow-auto">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto">
           <div className="mb-8">
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-2">
               / Dashboard

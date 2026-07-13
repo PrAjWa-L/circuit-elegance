@@ -74,15 +74,15 @@ function About() {
         </div>
       </section>
 
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-16">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10 md:gap-16">
           <div>
             <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">/ Principles</div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               How we operate.
             </h2>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             {values.map((v, i) => (
               <motion.div
                 key={i}

@@ -93,17 +93,17 @@ function About() {
                 className="flex gap-4 items-start"
               >
                 <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                <p className="text-lg leading-relaxed">{v}</p>
+                <p className="text-base sm:text-lg leading-relaxed">{v}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-32 border-t border-border">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="py-20 md:py-32 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">/ Timeline</div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16">
             Nearly four decades of infrastructure.
           </h2>
 

@@ -1,5 +1,6 @@
 from functools import lru_cache
 import json
+from logging import info
 from pathlib import Path
 from typing import Annotated
 
@@ -30,7 +31,11 @@ class Settings(BaseSettings):
     refresh_token_expire_days: int = 7
     algorithm: str = "HS256"
 
-    cors_origins: Annotated[list[str], NoDecode] = ["http://localhost:5173"]
+    cors_origins: Annotated[list[str], NoDecode] = [
+    "http://localhost:5173",
+    "http://localhost:8080",
+    ]
+    cors_origin_regex: str | None = None
     upload_dir: str = "uploads"
     max_upload_size_mb: int = 10
     allowed_image_types: Annotated[list[str], NoDecode] = [
@@ -72,10 +77,15 @@ class Settings(BaseSettings):
     def max_upload_size_bytes(self) -> int:
         return self.max_upload_size_mb * 1024 * 1024
 
-    @property
-    def cors_origin_regex(self) -> str | None:
-        if self.app_env.lower() == "development":
-            return r"^https?://(localhost|127\.0\.0\.1|\[::1\])(\:\d+)?$"
+    @field_validator("cors_origin_regex", mode="after")
+    @classmethod
+    def default_cors_origin_regex(cls, value: str | None, info) -> str | None:
+        if value:
+            return value
+
+        app_env = info.data.get("app_env", "development")
+        if app_env.lower() != "production":
+            return r"^https?://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$"
         return None
 
 

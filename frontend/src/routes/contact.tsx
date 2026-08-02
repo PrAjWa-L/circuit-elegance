@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { useState } from "react";
 import { Layout } from "@/components/site/Layout";
-import { Mail, Phone, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, Send } from "lucide-react";
+import { companyContact, useCompany } from "@/lib/products";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -17,7 +17,8 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
-  const [sent, setSent] = useState(false);
+  const { data: company, isLoading: companyLoading, isError: companyError } = useCompany();
+  const info = companyContact(company);
 
   return (
     <Layout>
@@ -47,9 +48,11 @@ function Contact() {
       <section className="pb-20 md:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-5 gap-8 md:gap-12">
           <div className="lg:col-span-2 space-y-6">
+            {companyLoading && <p className="text-sm text-muted-foreground">Loading contact details…</p>}
+            {companyError && <p className="text-sm text-destructive">Contact details could not be loaded.</p>}
             {[
-              { icon: Phone, label: "Phone", value: "+1 (713) 555-0142", meta: "Mon–Fri · 6am–8pm CT" },
-              { icon: Mail, label: "Email", value: "orders@voltcore.io", meta: "24-hour response SLA" },
+              { icon: Phone, label: "Phone", value: info.phone, meta: "Mon–Fri · 6am–8pm CT" },
+              { icon: Mail, label: "Email", value: info.email, meta: "24-hour response SLA" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -67,7 +70,7 @@ function Contact() {
                     {item.label}
                   </div>
                 </div>
-                <div className="font-semibold text-lg">{item.value}</div>
+                <div className="font-semibold text-lg">{companyLoading ? "Loading…" : item.value || "Not available"}</div>
                 <div className="text-sm text-muted-foreground mt-1">{item.meta}</div>
               </motion.div>
             ))}
@@ -78,22 +81,10 @@ function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
+            onSubmit={(event) => event.preventDefault()}
             className="lg:col-span-3 p-6 sm:p-8 md:p-10 rounded-lg border border-border bg-surface"
           >
-            {sent ? (
-              <div className="text-center py-16">
-                <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-6" />
-                <h3 className="text-2xl font-bold">Request received.</h3>
-                <p className="mt-3 text-muted-foreground">
-                  An engineer will be in touch within 4 business hours.
-                </p>
-              </div>
-            ) : (
-              <>
+            <>
                 <h2 className="text-2xl font-bold mb-8">Request a quote</h2>
                 <div className="grid gap-5">
                   {[
@@ -125,13 +116,14 @@ function Contact() {
                   </div>
                   <button
                     type="submit"
+                    disabled
+                    title="Quote submissions are not available from the current API."
                     className="mt-2 inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-[0_0_30px_-8px_var(--color-primary)]"
                   >
-                    Send Request <Send className="w-4 h-4" />
+                    Quote submissions unavailable <Send className="w-4 h-4" />
                   </button>
                 </div>
-              </>
-            )}
+            </>
           </motion.form>
         </div>
       </section>

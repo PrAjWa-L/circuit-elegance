@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Layout } from "@/components/site/Layout";
 import about from "@/assets/about.jpg";
 import { CheckCircle2 } from "lucide-react";
+import { companyContact, useCompany } from "@/lib/products";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -32,6 +33,9 @@ const values = [
 ];
 
 function About() {
+  const { data: company, isLoading: companyLoading, isError: companyError } = useCompany();
+  const info = companyContact(company);
+
   return (
     <Layout>
       <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
@@ -52,9 +56,7 @@ function About() {
               <span className="text-gradient-voltage">never stop running.</span>
             </h1>
             <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-              VOLTCORE is a family-owned industrial electrical distributor. For nearly
-              four decades we've supplied the switchgear, drives, and controls that keep
-              refineries, data centers, mines, and utilities on-line.
+              {companyLoading ? "Loading company information…" : companyError ? "Company information is unavailable right now." : info.about || "No company information has been published yet."}
             </p>
           </motion.div>
         </div>

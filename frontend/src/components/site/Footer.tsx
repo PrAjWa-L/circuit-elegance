@@ -1,7 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Zap } from "lucide-react";
+import { companyContact, useCompany } from "@/lib/products";
 
 export function Footer() {
+  const { data: company, isLoading, isError } = useCompany();
+  const info = companyContact(company);
+
   return (
     <footer className="border-t border-border bg-surface/50 mt-20 md:mt-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16 grid gap-10 md:gap-12 sm:grid-cols-2 md:grid-cols-4">
@@ -34,8 +38,7 @@ export function Footer() {
             Contact
           </h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="text-primary font-mono">+1 (713) 555-0142</li>
-            <li>orders@voltcore.io</li>
+            {isLoading ? <li>Loading contact details…</li> : isError ? <li className="text-destructive">Contact details unavailable.</li> : <><li className="text-primary font-mono">{info.phone || "Not available"}</li><li>{info.email || "Not available"}</li></>}
           </ul>
         </div>
       </div>

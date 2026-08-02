@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { Layout } from "@/components/site/Layout";
-import { products, categories } from "@/lib/products";
+import { useCategories, useProducts } from "@/lib/products";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
@@ -17,8 +17,12 @@ export const Route = createFileRoute("/products")({
 });
 
 function Products() {
-  const [cat, setCat] = useState<(typeof categories)[number]>("All");
-  const filtered = cat === "All" ? products : products.filter((p) => p.category === cat);
+  const [cat, setCat] = useState("All");
+  const { data: products = [], isLoading: productsLoading, isError: productsError } = useProducts();
+  const { data: categoryData = [], isLoading: categoriesLoading, isError: categoriesError } = useCategories();
+  const categories = ["All", ...categoryData.map((category) => category.name)];
+  const filtered =
+    cat === "All" ? products : products.filter((p) => p.category === cat);
 
   return (
     <Layout>
@@ -49,7 +53,11 @@ function Products() {
       <section className="pb-20 md:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-wrap gap-2 mb-8 md:mb-10 pb-6 border-b border-border">
-            {categories.map((c) => (
+            {categoriesLoading ? (
+              <span className="text-sm text-muted-foreground">Loading categories…</span>
+            ) : categoriesError ? (
+              <span className="text-sm text-destructive">Categories could not be loaded.</span>
+            ) : categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setCat(c)}
@@ -65,6 +73,19 @@ function Products() {
           </div>
 
           <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {productsLoading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-lg border border-border bg-surface aspect-[4/5] animate-pulse" />
+              ))
+            ) : productsError ? (
+              <p className="text-sm text-destructive sm:col-span-2 lg:col-span-3">
+                Products could not be loaded. Please try again shortly.
+              </p>
+            ) : filtered.length === 0 ? (
+              <p className="text-sm text-muted-foreground sm:col-span-2 lg:col-span-3">
+                No products are available in this category.
+              </p>
+            ) : (
             <AnimatePresence mode="popLayout">
               {filtered.map((p) => (
                 <motion.div
@@ -77,12 +98,7 @@ function Products() {
                   className="group rounded-lg overflow-hidden border border-border bg-surface hover:border-primary/40 transition-all"
                 >
                   <div className="aspect-square overflow-hidden bg-background relative">
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
+                    {p.image ? <img src={p.image} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" /> : <div className="flex h-full items-center justify-center text-sm text-muted-foreground">No image available</div>}
                     <div className="absolute top-4 left-4 px-2 py-1 rounded glass-panel text-[10px] font-mono uppercase tracking-widest text-primary">
                       {p.category}
                     </div>
@@ -105,14 +121,15 @@ function Products() {
                           ${p.price.toLocaleString()}
                         </div>
                       </div>
-                      <button className="text-xs font-semibold text-primary hover:underline">
-                        Request Quote →
-                      </button>
+                      <Link to="/products/$slug" params={{ slug: p.id }} className="text-xs font-semibold text-primary hover:underline">
+                        View Details →
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
+            )}
           </motion.div>
         </div>
       </section>

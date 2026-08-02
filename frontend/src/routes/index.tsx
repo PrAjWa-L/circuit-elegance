@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowRight, ShieldCheck, Activity, Cpu, Factory, Award } from "lucide-react";
 import { Layout } from "@/components/site/Layout";
-import { products } from "@/lib/products";
+import { useProducts } from "@/lib/products";
 import hero from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -28,6 +28,9 @@ const capabilities = [
 ];
 
 function Home() {
+  const { data: products = [], isLoading, isError } = useProducts({ featured: true });
+  const featured = products.slice(0, 3);
+
   return (
     <Layout>
       {/* HERO */}
@@ -138,7 +141,20 @@ function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.slice(0, 3).map((p, i) => (
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="rounded-lg border border-border bg-surface aspect-square animate-pulse" />
+                ))
+              : isError ? (
+                <p className="text-sm text-destructive sm:col-span-2 lg:col-span-3">
+                  Featured products are unavailable right now. Please try again shortly.
+                </p>
+              ) : featured.length === 0 ? (
+                <p className="text-sm text-muted-foreground sm:col-span-2 lg:col-span-3">
+                  No featured products are available yet.
+                </p>
+              )
+              : featured.map((p, i) => (
               <motion.div
                 key={p.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -147,16 +163,12 @@ function Home() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <Link
-                  to="/products"
+                  to="/products/$slug"
+                  params={{ slug: p.id }}
                   className="group block rounded-lg overflow-hidden border border-border bg-surface hover:border-primary/40 transition-all"
                 >
                   <div className="aspect-square overflow-hidden bg-background">
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
+                    {p.image ? <img src={p.image} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" /> : <div className="flex h-full items-center justify-center text-sm text-muted-foreground">No image available</div>}
                   </div>
                   <div className="p-6">
                     <div className="text-xs font-mono uppercase tracking-widest text-primary mb-2">

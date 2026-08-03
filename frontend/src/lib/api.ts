@@ -153,6 +153,24 @@ export type CompanyInfo = {
   about: string | null;
 };
 
+export type Enquiry = {
+  id: string;
+  name: string;
+  company: string | null;
+  email: string;
+  requirements: string;
+  status: "new" | "in_progress" | "closed";
+  created_at: string;
+  updated_at: string;
+};
+
+export type EnquiryInput = {
+  name: string;
+  company?: string | null;
+  email: string;
+  requirements: string;
+};
+
 export type AuthTokens = {
   access_token: string;
   refresh_token: string;
@@ -218,6 +236,10 @@ export const api = {
 
   getCompany() {
     return request<CompanyInfo>("/company");
+  },
+
+  createEnquiry(payload: EnquiryInput) {
+    return request<Enquiry>("/enquiries", { method: "POST", body: JSON.stringify(payload) });
   },
 
   login(email: string, password: string) {
@@ -288,6 +310,18 @@ export const api = {
 
   deleteCategory(token: string, categoryId: string) {
     return request<void>(`/admin/categories/${categoryId}`, { method: "DELETE", token });
+  },
+
+  getAdminEnquiries(token: string) {
+    return request<Enquiry[]>("/admin/enquiries", { token });
+  },
+
+  updateEnquiry(token: string, enquiryId: string, payload: Partial<EnquiryInput & Pick<Enquiry, "status">>) {
+    return request<Enquiry>(`/admin/enquiries/${enquiryId}`, { method: "PUT", token, body: JSON.stringify(payload) });
+  },
+
+  deleteEnquiry(token: string, enquiryId: string) {
+    return request<void>(`/admin/enquiries/${enquiryId}`, { method: "DELETE", token });
   },
 
   updateCompany(token: string, payload: CompanyInfoInput) {

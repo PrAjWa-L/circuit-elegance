@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { FormEvent, useState } from "react";
 import { Layout } from "@/components/site/Layout";
 import { Mail, Phone, Send } from "lucide-react";
 import { companyContact, useCompany } from "@/lib/products";
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -19,6 +21,24 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   const { data: company, isLoading: companyLoading, isError: companyError } = useCompany();
   const info = companyContact(company);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState("");
+
+  async function submitEnquiry(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setSubmitting(true);
+    setSubmissionMessage("");
+    try {
+      await api.createEnquiry({ name: String(form.get("name")), company: String(form.get("company") || "") || null, email: String(form.get("email")), requirements: String(form.get("requirements")) });
+      event.currentTarget.reset();
+      setSubmissionMessage("Request received. An engineer will be in touch within four business hours.");
+    } catch {
+      setSubmissionMessage("Your request could not be sent. Please try again shortly.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <Layout>
@@ -81,7 +101,7 @@ function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={submitEnquiry}
             className="lg:col-span-3 p-6 sm:p-8 md:p-10 rounded-lg border border-border bg-surface"
           >
             <>
@@ -98,6 +118,7 @@ function Contact() {
                       </label>
                       <input
                         required
+                        name={f.name}
                         type={f.type}
                         className="mt-2 w-full px-4 py-3 rounded-md bg-background border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       />
@@ -108,6 +129,7 @@ function Contact() {
                       Project Requirements
                     </label>
                     <textarea
+                      name="requirements"
                       required
                       rows={5}
                       placeholder="Specifications, quantities, timeline…"
@@ -116,12 +138,12 @@ function Contact() {
                   </div>
                   <button
                     type="submit"
-                    disabled
-                    title="Quote submissions are not available from the current API."
+                    disabled={submitting}
                     className="mt-2 inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-[0_0_30px_-8px_var(--color-primary)]"
                   >
-                    Quote submissions unavailable <Send className="w-4 h-4" />
+                    {submitting ? "Sending…" : "Send Request"} <Send className="w-4 h-4" />
                   </button>
+                  {submissionMessage && <p className={`text-sm ${submissionMessage.startsWith("Request received") ? "text-primary" : "text-destructive"}`}>{submissionMessage}</p>}
                 </div>
             </>
           </motion.form>

@@ -5,7 +5,7 @@ import { FormEvent, useState, type ComponentProps } from "react";
 import {
   LogOut, Package, Image, Layers, Plus, Star, Upload, Zap, Search, Bell, Settings, MoreHorizontal
 } from "lucide-react";
-import { api, assetUrl, type Category, type CompanyInfo, type Product, type ProductInput } from "@/lib/api";
+import { api, assetUrl, type Category, type CompanyInfo, type Enquiry, type Product, type ProductInput } from "@/lib/api";
 import { getAccessToken } from "@/lib/auth";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -29,11 +29,14 @@ function Admin() {
   const queryClient = useQueryClient();
   const [productEditor, setProductEditor] = useState<Product | "new" | null>(null);
   const [categoryEditor, setCategoryEditor] = useState<Category | "new" | null>(null);
+  const [enquiryEditor, setEnquiryEditor] = useState<Enquiry | "new" | null>(null);
+  const [activeModule, setActiveModule] = useState<"overview" | "products" | "categories" | "company" | "enquiries">("overview");
   const [actionError, setActionError] = useState("");
   const currentUser = useQuery({ queryKey: ["current-admin"], queryFn: () => api.me(getAccessToken() ?? ""), retry: false });
   const products = useQuery({ queryKey: ["admin-products"], queryFn: () => api.getAdminProducts(getAccessToken() ?? "", { limit: 100 }), enabled: Boolean(currentUser.data) });
   const categories = useQuery({ queryKey: ["admin-categories"], queryFn: () => api.getAdminCategories(getAccessToken() ?? ""), enabled: Boolean(currentUser.data) });
   const company = useQuery({ queryKey: ["admin-company"], queryFn: () => api.getCompany(), enabled: Boolean(currentUser.data) });
+  const enquiries = useQuery({ queryKey: ["admin-enquiries"], queryFn: () => api.getAdminEnquiries(getAccessToken() ?? ""), enabled: Boolean(currentUser.data) });
   const items = products.data?.items ?? [];
   const kpis = [
     { label: "Catalog products", value: products.data?.total ?? 0, icon: Package },
@@ -77,17 +80,17 @@ function Admin() {
         </Link>
         <nav className="p-3 space-y-1 flex-1">
           {[
-            { label: "Overview", active: true },
-            { label: "Orders" },
-            { label: "Inventory" },
-            { label: "Customers" },
-            { label: "Shipments" },
-            { label: "Reports" },
+            { label: "Overview", id: "overview" },
+            { label: "Products", id: "products" },
+            { label: "Categories", id: "categories" },
+            { label: "Company Settings", id: "company" },
+            { label: "Contact Enquiries", id: "enquiries" },
           ].map((item) => (
             <button
               key={item.label}
+              onClick={() => setActiveModule(item.id as typeof activeModule)}
               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                item.active
+                activeModule === item.id
                   ? "bg-primary/10 text-primary border border-primary/20"
                   : "text-muted-foreground hover:bg-surface hover:text-foreground"
               }`}
@@ -259,6 +262,7 @@ function Admin() {
 
           {actionError && <p className="mt-6 text-sm text-destructive">{actionError}</p>}
           <AdminManagement
+            activeModule={activeModule}
             categories={categories.data ?? []}
             company={company.data}
             companyLoading={company.isLoading}
@@ -269,17 +273,24 @@ function Admin() {
             onCategoryEditor={setCategoryEditor}
             onCatalogChanged={invalidateCatalog}
             onCompanyChanged={() => { void queryClient.invalidateQueries({ queryKey: ["admin-company"] }); void queryClient.invalidateQueries({ queryKey: ["company"] }); }}
+            enquiries={enquiries.data ?? []}
+            enquiriesLoading={enquiries.isLoading}
+            enquiriesError={enquiries.isError}
+            onEnquiryEditor={setEnquiryEditor}
+            onEnquiriesChanged={() => { void queryClient.invalidateQueries({ queryKey: ["admin-enquiries"] }); }}
           />
         </main>
       </div>
       <ProductEditor product={productEditor} categories={categories.data ?? []} onClose={() => setProductEditor(null)} onError={reportError} onSaved={invalidateCatalog} />
       <CategoryEditor category={categoryEditor} onClose={() => setCategoryEditor(null)} onError={reportError} onSaved={invalidateCatalog} />
+      <EnquiryEditor enquiry={enquiryEditor} onClose={() => setEnquiryEditor(null)} onError={reportError} onSaved={() => { void queryClient.invalidateQueries({ queryKey: ["admin-enquiries"] }); }} />
       <Toaster />
     </div>
   );
 }
 
 type ManagementProps = {
+  activeModule: "overview" | "products" | "categories" | "company" | "enquiries";
   products: Product[];
   categories: Category[];
   company: CompanyInfo | undefined;
@@ -290,6 +301,11 @@ type ManagementProps = {
   onCategoryEditor: (category: Category | "new") => void;
   onCatalogChanged: () => void;
   onCompanyChanged: () => void;
+  enquiries: Enquiry[];
+  enquiriesLoading: boolean;
+  enquiriesError: boolean;
+  onEnquiryEditor: (enquiry: Enquiry | "new") => void;
+  onEnquiriesChanged: () => void;
 };
 
 function errorMessage(error: unknown) {
@@ -313,30 +329,60 @@ function AdminManagement(props: ManagementProps) {
 
   return (
     <div className="mt-6 grid gap-6 xl:grid-cols-2">
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      {props.activeModule === "products" && <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 xl:col-span-2">
         <div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="font-semibold">Manage products</h2><p className="text-xs text-muted-foreground">Create, edit, archive, and upload product images.</p></div><button onClick={() => props.onProductEditor("new")} disabled={props.categories.length === 0} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"><Plus className="w-4 h-4" /> Product</button></div>
         {props.categories.length === 0 && <p className="mb-4 text-sm text-destructive">Create a category before creating a product.</p>}
         <div className="max-h-80 overflow-auto">
           {props.products.length === 0 ? <p className="py-6 text-center text-sm text-muted-foreground">No products available.</p> : props.products.map((product) => <div key={product.id} className="flex items-center justify-between gap-3 border-t border-border py-3 first:border-t-0"><div className="min-w-0"><p className="truncate text-sm font-medium">{product.name}</p><p className="text-xs font-mono text-muted-foreground">{product.sku}</p></div><div className="flex shrink-0 gap-2"><button onClick={() => props.onProductEditor(product)} className="text-xs font-semibold text-primary hover:underline">Edit</button><button disabled={deleteProduct.isPending} onClick={() => setProductToArchive(product)} className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50">Archive</button></div></div>)}
         </div>
-      </section>
+      </section>}
 
-      <section className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      {props.activeModule === "categories" && <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 xl:col-span-2">
         <div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="font-semibold">Manage categories</h2><p className="text-xs text-muted-foreground">Organize the public product catalog.</p></div><button onClick={() => props.onCategoryEditor("new")} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"><Plus className="w-4 h-4" /> Category</button></div>
         <div className="max-h-80 overflow-auto">
           {props.categories.length === 0 ? <p className="py-6 text-center text-sm text-muted-foreground">No categories available.</p> : props.categories.map((category) => <div key={category.id} className="flex items-center justify-between gap-3 border-t border-border py-3 first:border-t-0"><div><p className="text-sm font-medium">{category.name}</p><p className="text-xs text-muted-foreground">{category.product_count} active products</p></div><div className="flex gap-2"><button onClick={() => props.onCategoryEditor(category)} className="text-xs font-semibold text-primary hover:underline">Edit</button><button disabled={deleteCategory.isPending || category.product_count > 0} onClick={() => setCategoryToArchive(category)} className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50">Archive</button></div></div>)}
         </div>
-      </section>
+      </section>}
 
-      <CompanySettings company={props.company} isLoading={props.companyLoading} isError={props.companyError} onError={props.onError} onSaved={props.onCompanyChanged} />
+      {props.activeModule === "company" && <CompanySettings company={props.company} isLoading={props.companyLoading} isError={props.companyError} onError={props.onError} onSaved={props.onCompanyChanged} />}
+      {props.activeModule === "enquiries" && <EnquiriesManagement enquiries={props.enquiries} isLoading={props.enquiriesLoading} isError={props.enquiriesError} onError={props.onError} onEditor={props.onEnquiryEditor} onChanged={props.onEnquiriesChanged} />}
       <ArchiveDialog open={Boolean(productToArchive)} name={productToArchive?.name ?? ""} loading={deleteProduct.isPending} onCancel={() => setProductToArchive(null)} onConfirm={() => productToArchive && deleteProduct.mutate(productToArchive.id)} />
       <ArchiveDialog open={Boolean(categoryToArchive)} name={categoryToArchive?.name ?? ""} loading={deleteCategory.isPending} onCancel={() => setCategoryToArchive(null)} onConfirm={() => categoryToArchive && deleteCategory.mutate(categoryToArchive.id)} />
     </div>
   );
 }
 
-function ArchiveDialog({ open, name, loading, onCancel, onConfirm }: { open: boolean; name: string; loading: boolean; onCancel: () => void; onConfirm: () => void }) {
-  return <AlertDialog open={open} onOpenChange={(nextOpen) => !nextOpen && onCancel()}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Archive {name}?</AlertDialogTitle><AlertDialogDescription>This removes it from the active catalog. You can restore it later by editing it through the API.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel><AlertDialogAction disabled={loading} onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{loading ? "Archiving…" : "Archive"}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>;
+function ArchiveDialog({ open, name, loading, onCancel, onConfirm, action = "archive" }: { open: boolean; name: string; loading: boolean; onCancel: () => void; onConfirm: () => void; action?: "archive" | "delete" }) {
+  const deleting = action === "delete";
+  return <AlertDialog open={open} onOpenChange={(nextOpen) => !nextOpen && onCancel()}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{deleting ? `Delete ${name}?` : `Archive ${name}?`}</AlertDialogTitle><AlertDialogDescription>{deleting ? "This permanently removes the contact enquiry." : "This removes it from the active catalog. You can restore it later by editing it through the API."}</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel><AlertDialogAction disabled={loading} onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{loading ? (deleting ? "Deleting…" : "Archiving…") : deleting ? "Delete" : "Archive"}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>;
+}
+
+function EnquiriesManagement({ enquiries, isLoading, isError, onError, onEditor, onChanged }: { enquiries: Enquiry[]; isLoading: boolean; isError: boolean; onError: (message: string) => void; onEditor: (enquiry: Enquiry | "new") => void; onChanged: () => void }) {
+  const token = getAccessToken() ?? "";
+  const [enquiryToDelete, setEnquiryToDelete] = useState<Enquiry | null>(null);
+  const remove = useMutation({
+    mutationFn: (id: string) => api.deleteEnquiry(token, id),
+    onSuccess: () => { onChanged(); setEnquiryToDelete(null); toast.success("Contact enquiry deleted."); },
+    onError: (error) => onError(errorMessage(error)),
+  });
+  return <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 xl:col-span-2"><div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="font-semibold">Contact enquiries</h2><p className="text-xs text-muted-foreground">Quote and contact requests submitted through the site.</p></div><button onClick={() => onEditor("new")} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"><Plus className="w-4 h-4" /> Enquiry</button></div>{isLoading ? <p className="py-6 text-center text-sm text-muted-foreground">Loading enquiries…</p> : isError ? <p className="py-6 text-center text-sm text-destructive">Contact enquiries could not be loaded.</p> : enquiries.length === 0 ? <p className="py-6 text-center text-sm text-muted-foreground">No contact enquiries have been received.</p> : <div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr className="border-b border-border text-left text-xs font-mono uppercase tracking-widest text-muted-foreground"><th className="py-3 pr-4 font-normal">Contact</th><th className="py-3 pr-4 font-normal">Company</th><th className="py-3 pr-4 font-normal">Status</th><th className="py-3 pr-4 font-normal">Received</th><th className="py-3 text-right font-normal">Actions</th></tr></thead><tbody>{enquiries.map((enquiry) => <tr key={enquiry.id} className="border-b border-border/50"><td className="py-4 pr-4"><p className="font-medium">{enquiry.name}</p><p className="text-xs text-muted-foreground">{enquiry.email}</p></td><td className="py-4 pr-4 text-muted-foreground">{enquiry.company || "—"}</td><td className="py-4 pr-4"><span className="rounded border border-primary/30 bg-primary/15 px-2 py-1 text-xs font-mono text-primary">{enquiry.status.replaceAll("_", " ")}</span></td><td className="py-4 pr-4 text-muted-foreground">{new Date(enquiry.created_at).toLocaleDateString()}</td><td className="py-4 text-right"><button onClick={() => onEditor(enquiry)} className="mr-3 text-xs font-semibold text-primary hover:underline">Edit</button><button onClick={() => setEnquiryToDelete(enquiry)} className="text-xs font-semibold text-destructive hover:underline">Delete</button></td></tr>)}</tbody></table></div>}<ArchiveDialog open={Boolean(enquiryToDelete)} name={enquiryToDelete?.name ?? ""} loading={remove.isPending} onCancel={() => setEnquiryToDelete(null)} onConfirm={() => enquiryToDelete && remove.mutate(enquiryToDelete.id)} action="delete" /></section>;
+}
+
+function EnquiryEditor({ enquiry, onClose, onError, onSaved }: { enquiry: Enquiry | "new" | null; onClose: () => void; onError: (message: string) => void; onSaved: () => void }) {
+  const token = getAccessToken() ?? "";
+  const save = useMutation({
+    mutationFn: async (event: FormEvent<HTMLFormElement>) => {
+      const form = new FormData(event.currentTarget);
+      const payload = { name: String(form.get("name")), company: String(form.get("company") || "") || null, email: String(form.get("email")), requirements: String(form.get("requirements")), status: String(form.get("status")) as Enquiry["status"] };
+      if (enquiry === "new") await api.createEnquiry(payload);
+      else await api.updateEnquiry(token, enquiry!.id, payload);
+    },
+    onSuccess: () => { onSaved(); toast.success(enquiry === "new" ? "Contact enquiry created." : "Contact enquiry updated."); onClose(); },
+    onError: (error) => onError(errorMessage(error)),
+  });
+  if (!enquiry) return null;
+  const existing = enquiry === "new" ? undefined : enquiry;
+  return <Dialog open onOpenChange={(open) => !open && onClose()}><DialogContent><DialogHeader><DialogTitle>{existing ? "Edit contact enquiry" : "New contact enquiry"}</DialogTitle><DialogDescription>Record and manage an incoming customer request.</DialogDescription></DialogHeader><form onSubmit={(event) => { event.preventDefault(); save.mutate(event); }} className="grid gap-4"><div className="grid gap-4 sm:grid-cols-2"><Field name="name" label="Contact name" defaultValue={existing?.name} required /><Field name="company" label="Company" defaultValue={existing?.company ?? ""} /><Field name="email" label="Email" type="email" defaultValue={existing?.email} required /><label className="grid gap-2 text-sm">Status<select name="status" defaultValue={existing?.status ?? "new"} className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"><option value="new">New</option><option value="in_progress">In progress</option><option value="closed">Closed</option></select></label></div><label className="grid gap-2 text-sm">Requirements<Textarea name="requirements" defaultValue={existing?.requirements} required /></label><button disabled={save.isPending} className="rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground disabled:opacity-50">{save.isPending ? "Saving…" : "Save enquiry"}</button></form></DialogContent></Dialog>;
 }
 
 function ProductEditor({ product, categories, onClose, onError, onSaved }: { product: Product | "new" | null; categories: Category[]; onClose: () => void; onError: (message: string) => void; onSaved: () => void }) {
